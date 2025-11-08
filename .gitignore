@@ -17,3 +17,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+
+# Ignore everything in build except AARs
+/app/build/*
+!/app/build/outputs/aar/*.aar
