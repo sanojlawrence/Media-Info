@@ -1,4 +1,4 @@
-package com.jldevelopers.mediainfosource;
+package com.jldevelopers.mediainfo;
 
 import android.net.Uri;
 import android.util.Log;

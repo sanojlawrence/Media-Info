@@ -1,4 +1,4 @@
-package com.jldevelopers.mediainfosource;
+package com.jldevelopers.mediainfo;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
