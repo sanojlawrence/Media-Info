@@ -1,0 +1,81 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
+android {
+    namespace 'com.jldevelopers.mediainfo'
+    compileSdk 36
+
+    defaultConfig {
+        minSdk 24
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+
+        consumerProguardFiles "proguard-android-optimize.txt.pro"
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++17 -frtti -fexceptions"
+                arguments "-DANDROID_STL=c++_shared"
+                targets "mediainfo-android"
+                version "3.22.1"
+            }
+        }
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+        }
+    }
+
+    // ✅ Rename AAR output
+    libraryVariants.configureEach { variant ->
+        variant.outputs.all { output ->
+            def versionName = "25.10"
+            def buildType = variant.buildType.name
+            output.outputFileName = "MediaInfo_v${versionName}_${buildType}.aar"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            externalNativeBuild {
+                cmake {
+                    cppFlags "-std=c++17 -frtti -fexceptions -O2 -DNDEBUG"
+                }
+            }
+        }
+        debug {
+            externalNativeBuild {
+                cmake {
+                    cppFlags "-std=c++17 -frtti -fexceptions -g -DDEBUG"
+                }
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.22.1"
+        }
+    }
+
+    packagingOptions {
+        exclude '**/libmediainfo.a'
+        exclude '**/libzen.a'
+        exclude '**/libthirdparty.a'
+        pickFirst 'lib/**/libmediainfo-android.so'
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+}

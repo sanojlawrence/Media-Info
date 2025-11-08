@@ -1,0 +1,11 @@
+# Clean build
+./gradlew clean
+
+# Build release AAR
+./gradlew assembleRelease
+
+# Build and publish to local Maven
+./gradlew publishToMavenLocal
+
+# Build debug AAR
+./gradlew assembleDebug
