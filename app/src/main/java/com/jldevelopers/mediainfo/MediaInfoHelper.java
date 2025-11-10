@@ -1,10 +1,7 @@
 package com.jldevelopers.mediainfo;
 
-import android.net.Uri;
 import android.util.Log;
 import java.io.File;
-import java.io.IOException;
-import java.text.Normalizer;
 
 public class MediaInfoHelper {
 

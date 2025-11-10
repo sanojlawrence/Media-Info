@@ -310,7 +310,7 @@ extern "C" {
 
 // Initialize MediaInfo
 JNIEXPORT jboolean JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_initMediaInfo(JNIEnv *env, jobject thiz) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_initMediaInfo(JNIEnv *env, jobject thiz) {
     try {
         if (g_mediaInfo == nullptr) {
             g_mediaInfo = new MediaInfoLib::MediaInfo();
@@ -336,7 +336,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_initMediaInfo(JNIEnv *env,
 
 // Open a file for analysis - USING DIRECT MEDIAINFO
 JNIEXPORT jboolean JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_openFile(JNIEnv *env, jobject thiz, jstring file_path) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_openFile(JNIEnv *env, jobject thiz, jstring file_path) {
     // Check initialization
     if (!g_mediaInfo) {
         __android_log_print(ANDROID_LOG_ERROR, "MediaInfoJNI", "MediaInfo instance not initialized");
@@ -366,7 +366,6 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_openFile(JNIEnv *env, jobj
     // Log path (for debugging only)
     // Note: Logging UTF-16 directly can show garbled output for non-ASCII chars, so convert to UTF-8 for logs
     const char *utf8Path = env->GetStringUTFChars(file_path, nullptr);
-    __android_log_print(ANDROID_LOG_INFO, "MediaInfoJNI", "Opening file: %s", utf8Path);
     env->ReleaseStringUTFChars(file_path, utf8Path);
 
     // Close any previously opened file and open the new one
@@ -379,13 +378,12 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_openFile(JNIEnv *env, jobj
         return JNI_FALSE;
     }
 
-    __android_log_print(ANDROID_LOG_INFO, "MediaInfoJNI", "Media file opened successfully");
     return JNI_TRUE;
 }
 
 // Get media information as string - USING DIRECT MEDIAINFO
 JNIEXPORT jstring JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getInform(JNIEnv *env, jobject thiz) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_getInform(JNIEnv *env, jobject thiz) {
     if (g_mediaInfo == nullptr) {
         LOGE("MediaInfo not initialized in getInform");
         return env->NewStringUTF("MediaInfo not initialized");
@@ -416,7 +414,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getInform(JNIEnv *env, job
 
 // Get detailed information for a specific stream
 JNIEXPORT jstring JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getStreamDetails(JNIEnv *env, jobject thiz, jint stream_kind, jint stream_number) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_getStreamDetails(JNIEnv *env, jobject thiz, jint stream_kind, jint stream_number) {
     if (g_mediaInfo == nullptr) {
         return env->NewStringUTF("");
     }
@@ -446,7 +444,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getStreamDetails(JNIEnv *e
 
 // Get all streams information in mediainfo format
 JNIEXPORT jstring JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getAllStreamsInfo(JNIEnv *env, jobject thiz) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_getAllStreamsInfo(JNIEnv *env, jobject thiz) {
     if (g_mediaInfo == nullptr) {
         return env->NewStringUTF("MediaInfo not initialized");
     }
@@ -510,7 +508,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getAllStreamsInfo(JNIEnv *
 
 // Get specific parameter value - USING DIRECT MEDIAINFO
 JNIEXPORT jstring JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getParameter(JNIEnv *env, jobject thiz, jint stream_kind, jint stream_number, jstring parameter) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_getParameter(JNIEnv *env, jobject thiz, jint stream_kind, jint stream_number, jstring parameter) {
     if (g_mediaInfo == nullptr) {
         LOGE("MediaInfo not initialized in getParameter");
         return env->NewStringUTF("");
@@ -554,7 +552,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getParameter(JNIEnv *env, 
 
 // Get count of streams for a specific type - USING DIRECT MEDIAINFO
 JNIEXPORT jint JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getStreamCount(JNIEnv *env, jobject thiz, jint stream_kind) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_getStreamCount(JNIEnv *env, jobject thiz, jint stream_kind) {
     if (g_mediaInfo == nullptr) {
         LOGE("MediaInfo not initialized in getStreamCount");
         return -1;
@@ -575,7 +573,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getStreamCount(JNIEnv *env
 
 // Get all information as a formatted string - USING DIRECT MEDIAINFO
 JNIEXPORT jstring JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getFullInfo(JNIEnv *env, jobject thiz) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_getFullInfo(JNIEnv *env, jobject thiz) {
     if (g_mediaInfo == nullptr) {
         return env->NewStringUTF("MediaInfo not initialized");
     }
@@ -598,7 +596,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getFullInfo(JNIEnv *env, j
 
 // Close file - USING DIRECT MEDIAINFO
 JNIEXPORT void JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_closeFile(JNIEnv *env, jobject thiz) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_closeFile(JNIEnv *env, jobject thiz) {
     if (g_mediaInfo != nullptr) {
         LOGI("Closing file with direct MediaInfo");
         g_mediaInfo->Close();
@@ -607,7 +605,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_closeFile(JNIEnv *env, job
 
 // Cleanup MediaInfo
 JNIEXPORT void JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_cleanupMediaInfo(JNIEnv *env, jobject thiz) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_cleanupMediaInfo(JNIEnv *env, jobject thiz) {
     if (g_mediaInfo != nullptr) {
         delete g_mediaInfo;
         g_mediaInfo = nullptr;
@@ -617,7 +615,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_cleanupMediaInfo(JNIEnv *e
 
 // Get version info
 JNIEXPORT jstring JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getVersionInfo(JNIEnv *env, jobject thiz) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_getVersionInfo(JNIEnv *env, jobject thiz) {
     try {
         MediaInfoLib::String version = MediaInfoLib::MediaInfo::Option_Static(StdStringToMediaInfoString("Info_Version"), StdStringToMediaInfoString(""));
 
@@ -636,7 +634,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getVersionInfo(JNIEnv *env
 
 // Get complete inform similar to mediainfo command line
 JNIEXPORT jstring JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getCompleteInform(JNIEnv *env, jobject thiz) {
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_getCompleteInform(JNIEnv *env, jobject thiz) {
     if (g_mediaInfo == nullptr) {
         return env->NewStringUTF("MediaInfo not initialized");
     }
@@ -665,7 +663,7 @@ Java_com_jldevelopers_mediainfosource_MediaInfoHelper_getCompleteInform(JNIEnv *
 
 // Add this to your JNI functions
 JNIEXPORT jboolean JNICALL
-Java_com_jldevelopers_mediainfosource_MediaInfoHelper_isParameterNotBlank(
+Java_com_jldevelopers_mediainfo_MediaInfoHelper_isParameterNotBlank(
         JNIEnv *env, jobject thiz, jint stream_kind, jint stream_number, jstring parameter) {
 
     if (g_mediaInfo == nullptr) {
